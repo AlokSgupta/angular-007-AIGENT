@@ -85,7 +85,8 @@ export class TodosComponent implements OnInit, AfterViewInit {
     this.bedrockService.generateText(this.prompt)
       .subscribe({
         next: (text: any) => {
-          this.generatedText =  JSON.stringify(text.body,null,2); // Update the generatedText property with the API response
+          this.response =  JSON.stringify(text.body,null,2); // Update the generatedText property with the API response
+          this.generatedText = this.response.replace(/\\n/g, '<br>'); // Replace newlines with <br> tags for HTML rendering
           console.log('Generated text:', this.generatedText);
         },
         error: (error) => {
