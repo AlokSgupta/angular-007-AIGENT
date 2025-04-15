@@ -16,14 +16,8 @@ export class BedrockService {
       .set("session_id", "1234")
       .set("prompt", prompt);
 
-      const data = {
-        agent_id: agentid,
-        alias_id: aliasid,
-        session_id: "1234",
-        prompt: prompt
-      }
 
-      return this.http.post<string>('https://ntypzyxmz5.execute-api.us-west-2.amazonaws.com/dev/invoke-agent', data);
+      return this.http.post<string>('https://ntypzyxmz5.execute-api.us-west-2.amazonaws.com/dev/invoke-agent', { params: params });
 
     //return this.http.post<string>('https://ntypzyxmz5.execute-api.us-west-2.amazonaws.com/dev/alok-test-007', { prompt });
   }
