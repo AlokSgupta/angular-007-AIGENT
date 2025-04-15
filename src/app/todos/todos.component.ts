@@ -32,8 +32,25 @@ export class TodosComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
-
+    const flowchartData = {
+      nodes: [
+        { id: 'A', label: 'Title Page' },
+        { id: 'B', label: 'Executive Summary' },
+        { id: 'C', label: 'Table of Contents', shape: 'diamond' },
+        { id: 'D', label: 'Introduction' },
+        { id: 'E', label: 'Materials and Methods' },
+        { id: 'F', label: 'Conclusions' },
+      ],
+      edges: [
+        { from: 'A', to: 'B' },
+        { from: 'B', to: 'C' },
+        { from: 'C', to: 'D', label: 'Yes' },
+        { from: 'C', to: 'E', label: 'No' },
+        { from: 'D', to: 'E' },
+        { from: 'E', to: 'F' },
+      ],
+    };
+    this.renderMermaid(flowchartData);
   }
 
   listTodos() {
@@ -65,28 +82,10 @@ export class TodosComponent implements OnInit, AfterViewInit {
   }
 
   generate() {
-    const flowchartData = {
-      nodes: [
-        { id: 'A', label: 'Title Page' },
-        { id: 'B', label: 'Executive Summary' },
-        { id: 'C', label: 'Table of Contents', shape: 'diamond' },
-        { id: 'D', label: 'Introduction' },
-        { id: 'E', label: 'Materials and Methods' },
-        { id: 'F', label: 'Conclusions' },
-      ],
-      edges: [
-        { from: 'A', to: 'B' },
-        { from: 'B', to: 'C' },
-        { from: 'C', to: 'D', label: 'Yes' },
-        { from: 'C', to: 'E', label: 'No' },
-        { from: 'D', to: 'E' },
-        { from: 'E', to: 'F' },
-      ],
-    };
     this.bedrockService.generateText(this.prompt)
       .subscribe({
         next: (text: any) => {
-          this.generatedText = JSON.stringify(text.body,null,2); // Update the generatedText property with the API response
+          this.generatedText =  JSON.stringify(text.body,null,2); // Update the generatedText property with the API response
           console.log('Generated text:', this.generatedText);
         },
         error: (error) => {
@@ -94,7 +93,6 @@ export class TodosComponent implements OnInit, AfterViewInit {
           this.generatedText = 'An error occurred while generating the response.'; // Handle errors
         }
       });
-      this.renderMermaid(flowchartData);
   }
 
 
