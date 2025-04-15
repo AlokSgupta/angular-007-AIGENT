@@ -34,11 +34,12 @@ export class TodosComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     const flowchartData = {
       nodes: [
-        { id: 'A', label: 'Start' },
-        { id: 'B', label: 'Process 1' },
-        { id: 'C', label: 'Decision', shape: 'diamond' },
-        { id: 'D', label: 'Process 2' },
-        { id: 'E', label: 'End' },
+        { id: 'A', label: '1. Title Page - Study title - Report number - Study dates - Sponsor information - Testing facility information - Signatures of key personnel' },
+        { id: 'B', label: '2. Executive Summary - Brief overview of study objectives - Key findings - Compliance statements - Important deviations (if any) ' },
+        { id: 'C', label: '3. Table of Contents ', shape: 'diamond' },
+        { id: 'D', label: '4. Introduction - Study purpose - Background information - Study objectives - Regulatory requirements ' },
+        { id: 'E', label: '5. Materials and Methods - Test system description - Sample handling procedures - Analytical method details - Equipment and reagents used - Reference standards - Quality control samples - Validation parameters ' },
+        { id: 'F', label: '6.  Conclusions - Summary of findings - Method performance - Recommendations ' },
       ],
       edges: [
         { from: 'A', to: 'B' },
@@ -46,6 +47,7 @@ export class TodosComponent implements OnInit, AfterViewInit {
         { from: 'C', to: 'D', label: 'Yes' },
         { from: 'C', to: 'E', label: 'No' },
         { from: 'D', to: 'E' },
+        { from: 'E', to: 'F' },
       ],
     };
     this.renderMermaid(flowchartData);
