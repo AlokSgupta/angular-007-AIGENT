@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
 import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '../../../amplify/data/resource';
 import { BedrockService } from '../bedrock.service';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
+import mermaid from 'mermaid';
 
 const client = generateClient<Schema>();
 
@@ -15,7 +16,10 @@ const client = generateClient<Schema>();
   templateUrl: './todos.component.html',
   styleUrl: './todos.component.css',
 })
-export class TodosComponent implements OnInit {
+export class TodosComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('mermaidContainer') mermaidContainer!: ElementRef; // Add the non-null assertion operator (!)
+
   todos: any[] = [];
   prompt: string = '';
   generatedText: string = '';
@@ -25,6 +29,26 @@ export class TodosComponent implements OnInit {
 
   ngOnInit(): void {
     this.listTodos();
+  }
+
+  ngAfterViewInit(): void {
+    const flowchartData = {
+      nodes: [
+        { id: 'A', label: 'Start' },
+        { id: 'B', label: 'Process 1' },
+        { id: 'C', label: 'Decision', shape: 'diamond' },
+        { id: 'D', label: 'Process 2' },
+        { id: 'E', label: 'End' },
+      ],
+      edges: [
+        { from: 'A', to: 'B' },
+        { from: 'B', to: 'C' },
+        { from: 'C', to: 'D', label: 'Yes' },
+        { from: 'C', to: 'E', label: 'No' },
+        { from: 'D', to: 'E' },
+      ],
+    };
+    this.renderMermaid(flowchartData);
   }
 
   listTodos() {
@@ -67,5 +91,32 @@ export class TodosComponent implements OnInit {
           this.generatedText = 'An error occurred while generating the response.'; // Handle errors
         }
       });
+  }
+
+
+  renderMermaid(data: { nodes: { id: string; label: string; shape?: string }[]; edges: { from: string; to: string; to2?: string; label?: string }[] }): void {
+    let mermaidString = 'graph LR\n';
+
+    data.nodes.forEach((node: { id: string; label: string; shape?: string }) => {
+      if (node.shape === 'diamond') {
+        mermaidString += `${node.id}(${node.label})\n`;
+      } else {
+        mermaidString += `${node.id}[${node.label}]\n`;
+      }
+    });
+
+    data.edges.forEach((edge: { from: string; to: string; to2?: string; label?: string }) => {
+      if (edge.to2) {
+        mermaidString += `${edge.from} --> ${edge.to}; \n`;
+        mermaidString += `${edge.to} --> ${edge.to2}; \n`;
+      } else if (edge.label) {
+        mermaidString += `${edge.from} --"${edge.label}"--> ${edge.to}\n`;
+      } else {
+        mermaidString += `${edge.from} --> ${edge.to}\n`;
+      }
+    });
+
+    this.mermaidContainer.nativeElement.innerHTML = mermaidString;
+    mermaid.init({}, this.mermaidContainer.nativeElement);
   }
 }
