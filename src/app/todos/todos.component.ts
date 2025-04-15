@@ -21,7 +21,7 @@ export class TodosComponent implements OnInit, AfterViewInit {
   @ViewChild('mermaidContainer') mermaidContainer!: ElementRef; // Add the non-null assertion operator (!)
 
   todos: any[] = [];
-  prompt: string = '';
+  prompt: string = 'Summarize the document named VCV000040562';
   generatedText: string = '';
   response: string = '';
 

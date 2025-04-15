@@ -9,7 +9,7 @@ export class BedrockService {
 
   generateText(prompt: string) {
     let agentid =  "HHH33W9BJO";
-    let aliasid = "XISRC0Q5SN";
+    let aliasid = "8PXXBYHNIQ";
     let params = new HttpParams()
       .set("agent_id", agentid)
       .set("alias_id", aliasid)
