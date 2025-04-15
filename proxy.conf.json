@@ -1,0 +1,8 @@
+{
+  "/dev/alok-test-007": {
+    "target": "https://ntypzyxmz5.execute-api.us-west-2.amazonaws.com",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

@@ -4,19 +4,20 @@ import { HttpClientModule } from '@angular/common/http'; // Import HttpClientMod
 import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '../../../amplify/data/resource';
 import { BedrockService } from '../bedrock.service';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
 
 const client = generateClient<Schema>();
 
 @Component({
   selector: 'app-todos',
   standalone: true,
-  imports: [CommonModule, HttpClientModule], // Add HttpClientModule here
+  imports: [CommonModule, HttpClientModule, FormsModule], // Add HttpClientModule here
   templateUrl: './todos.component.html',
   styleUrl: './todos.component.css',
 })
 export class TodosComponent implements OnInit {
   todos: any[] = [];
-  prompt: string = 'who is Alok?';
+  prompt: string = '';
   generatedText: string = '';
   response: string = '';
 
@@ -56,10 +57,15 @@ export class TodosComponent implements OnInit {
 
   generate() {
     this.bedrockService.generateText(this.prompt)
-      .subscribe(text => {
-        this.generatedText = text;
-        console.log('Generated text:', text);
-        this.response = text;
+      .subscribe({
+        next: (text: any) => {
+          this.generatedText = text.body; // Update the generatedText property with the API response
+          console.log('Generated text:', this.generatedText);
+        },
+        error: (error) => {
+          console.error('Error generating text:', error);
+          this.generatedText = 'An error occurred while generating the response.'; // Handle errors
+        }
       });
   }
 }

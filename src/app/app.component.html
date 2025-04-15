@@ -4,7 +4,17 @@
     let-user="user"
     let-signOut="signOut"
   >
+  <div class="row">
+    <!-- Left Column -->
+    <div class="col-md-11" style="float: right;">
+
+    </div>
+    <div class="col-md-1" style="font-size: .9rem; float: right;">
+      <button  (click)="signOut()">Sign Out</button>
+    </div>
+  </div>
+
     <app-todos></app-todos>
-    <button (click)="signOut()">Sign Out</button>
+
   </ng-template>
 </amplify-authenticator>
